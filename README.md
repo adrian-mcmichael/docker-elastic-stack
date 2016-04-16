@@ -2,6 +2,10 @@
 
 This is a work in progress.
 
+## Requirements
+
+Install the Docker toolbox at at least version 1.11.0 
+
 ## What works
 
 The following works:
@@ -18,4 +22,9 @@ Known issues:
 Todo:
 
 * Add the logstash component
- 
+
+## Running
+
+```bash
+docker-compose up
+```
