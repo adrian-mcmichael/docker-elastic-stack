@@ -1,0 +1,98 @@
+version: '2'
+services:
+  data-es1:
+    image: cogniteev/echo
+    command: echo 'Data Container for Elasticsearch'
+    volumes:
+      - /usr/share/elasticsearch/data
+      - /usr/share/elasticsearch/logs
+      - /usr/share/elasticsearch/plugins
+
+  data-es2:
+    image: cogniteev/echo
+    command: echo 'Data Container for Elasticsearch'
+    volumes:
+      - /usr/share/elasticsearch/data
+      - /usr/share/elasticsearch/logs
+      - /usr/share/elasticsearch/plugins
+
+  elasticsearch1:
+    depends_on:
+      - data-es1
+    build: ./elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      elk-network:
+        ipv4_address: 172.16.238.10
+        ipv6_address: 2001:3984:3989::10
+    volumes:
+      - ./config/elasticsearch:/usr/share/elasticsearch/config
+      - ./scripts:/usr/share/elasticsearch/scripts
+    volumes_from:
+      - data-es1
+    command: elasticsearch -Des.network.host=0.0.0.0
+
+  elasticsearch2:
+    depends_on:
+      - data-es2
+      - elasticsearch1
+    build: ./elasticsearch
+    ports:
+      - "8200:9200"
+      - "8300:9300"
+    networks:
+      elk-network:
+        ipv4_address: 172.16.238.20
+        ipv6_address: 2001:3984:3989::20
+    volumes:
+      - ./config/elasticsearch:/usr/share/elasticsearch/config
+      - ./scripts:/usr/share/elasticsearch/scripts
+    volumes_from:
+      - data-es2
+    command: elasticsearch -Des.network.host=0.0.0.0
+
+  kopf:
+    depends_on:
+      - elasticsearch1
+      - elasticsearch2
+    image: lmenezes/elasticsearch-kopf
+    networks:
+      elk-network:
+        ipv4_address: 172.16.238.30
+        ipv6_address: 2001:3984:3989::30
+    ports:
+      - 8080:80
+    environment:
+      - KOPF_SERVER_NAME=dockerhost
+      - KOPF_ES_SERVERS=172.16.238.10:9200
+
+  kibana:
+    depends_on:
+      - elasticsearch1
+      - elasticsearch2
+    build: ./kibana
+    ports:
+      - "5601:5601"
+    links:
+      - elasticsearch1
+    networks:
+      elk-network:
+        ipv4_address: 172.16.238.40
+        ipv6_address: 2001:3984:3989::40
+    environment:
+      - ELASTICSEARCH_URL=http://172.16.238.10:9200
+
+networks:
+  elk-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.16.238.0/24
+        gateway: 172.16.238.1
+      - subnet: 2001:3984:3989::/64
+        gateway: 2001:3984:3989::1
