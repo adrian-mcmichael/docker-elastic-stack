@@ -1,10 +1,10 @@
-FROM kibana:4.5
+FROM kibana:4.5.0
 
-COPY ../config/kibana /opt/kibana/config
+COPY kibana.yml /opt/kibana/config
 
-RUN gosu kibana kibana plugin plugin --install elasticsearch/marvel/2.3.1
-RUN gosu kibana kibana pluginplugin --install elastic/sense
-RUN gosu kibana kibana plugin plugin --install kibana/timelion
+RUN chown -R kibana:kibana /opt/kibana/
+RUN chown kibana:kibana /opt/kibana/optimize
 
-RUN chmod o+w /opt/kibana/optimize/.babelcache.json
-RUN chown -R kibana:kibana /opt/kibana
+RUN gosu kibana kibana plugin --install elasticsearch/marvel/2.3.1
+RUN gosu kibana kibana plugin --install elastic/sense
+RUN gosu kibana kibana plugin --install kibana/timelion
