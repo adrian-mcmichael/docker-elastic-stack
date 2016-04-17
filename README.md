@@ -1,23 +1,22 @@
 # docker-elastic-stack
 
-This is a work in progress.
-
 ## Requirements
 
-Install the Docker toolbox at at least version 1.11.0 
+Install the Docker toolbox at at least version 1.11.0
 
-## What works
+## Description
 
-The following works:
+The following components are created when this docker file is created:
 
-* Spins up a two node elasticsearch (ports 9200 and 8200 respectively)
-* Installs marvel
-* Spins up Kopf as a standalone server on port 8080
-* Mounts elasticsearch data containers
+* Spins up a two node Elasticsearch cluster (available on ports 9200 and 8200 respectively)
+* Installs Marvel plugin on the cluster.
+* Spins up Kopf as a standalone server on port 8080.
+* Mounts Elasticsearch data containers.
+* Spins up Kibana with Sense, Timelion and Marvel.
 
 Known issues:
 
-* File permissions on Kibana mean that it isn't starting up
+* Marvel is currently not showing data from the cluster in Kibana.
 
 Todo:
 
