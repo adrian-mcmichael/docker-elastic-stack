@@ -18,7 +18,7 @@ Known issues:
 
 * Marvel is currently not showing data from the cluster in Kibana.
 
-Todo:
+Enhancements to come:
 
 * Add the logstash component
 
