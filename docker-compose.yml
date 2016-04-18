@@ -29,8 +29,6 @@ services:
       elk-network:
         ipv4_address: 172.16.238.10
         ipv6_address: 2001:3984:3989::10
-    volumes:
-      - ./config/elasticsearch:/usr/share/elasticsearch/config
     volumes_from:
       - data-es1
     command: elasticsearch -Des.network.host=0.0.0.0
@@ -47,8 +45,6 @@ services:
       elk-network:
         ipv4_address: 172.16.238.20
         ipv6_address: 2001:3984:3989::20
-    volumes:
-      - ./config/elasticsearch:/usr/share/elasticsearch/config
     volumes_from:
       - data-es2
     command: elasticsearch -Des.network.host=0.0.0.0

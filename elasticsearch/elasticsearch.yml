@@ -167,7 +167,7 @@ cluster.name: test-elasticsearch
 #
 #path.plugins: /export/home/adrianm/elasticsearch/plugins
 
-path.scripts: /usr/share/elasticsearch/scripts
+#path.scripts: /usr/share/elasticsearch/scripts
 
 
 #################################### Plugin ###################################
