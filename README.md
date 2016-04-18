@@ -14,10 +14,6 @@ The following components are created when this docker file is created:
 * Mounts Elasticsearch data containers.
 * Spins up Kibana with Sense, Timelion and Marvel.
 
-Known issues:
-
-* Marvel is currently not showing data from the cluster in Kibana.
-
 Enhancements to come:
 
 * Add the logstash component

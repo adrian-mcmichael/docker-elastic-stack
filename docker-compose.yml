@@ -1,26 +1,6 @@
 version: '2'
 services:
-  data-es1:
-    image: cogniteev/echo
-    command: echo 'Data Container for Elasticsearch'
-    volumes:
-      - /usr/share/elasticsearch/data
-      - /usr/share/elasticsearch/logs
-      - /usr/share/elasticsearch/plugins
-      - /usr/share/elasticsearch/scripts
-
-  data-es2:
-    image: cogniteev/echo
-    command: echo 'Data Container for Elasticsearch'
-    volumes:
-      - /usr/share/elasticsearch/data
-      - /usr/share/elasticsearch/logs
-      - /usr/share/elasticsearch/plugins
-      - /usr/share/elasticsearch/scripts
-
   elasticsearch1:
-    depends_on:
-      - data-es1
     build: ./elasticsearch
     ports:
       - "9200:9200"
@@ -29,13 +9,15 @@ services:
       elk-network:
         ipv4_address: 172.16.238.10
         ipv6_address: 2001:3984:3989::10
-    volumes_from:
-      - data-es1
+    volumes:
+      - es1-data:/usr/share/elasticsearch/data
+      - es1-logs:/usr/share/elasticsearch/logs
+      - es1-plugins:/usr/share/elasticsearch/plugins
+      - es1-scripts:/usr/share/elasticsearch/scripts
     command: elasticsearch -Des.network.host=0.0.0.0
 
   elasticsearch2:
     depends_on:
-      - data-es2
       - elasticsearch1
     build: ./elasticsearch
     ports:
@@ -45,8 +27,11 @@ services:
       elk-network:
         ipv4_address: 172.16.238.20
         ipv6_address: 2001:3984:3989::20
-    volumes_from:
-      - data-es2
+    volumes:
+      - es2-data:/usr/share/elasticsearch/data
+      - es2-logs:/usr/share/elasticsearch/logs
+      - es2-plugins:/usr/share/elasticsearch/plugins
+      - es2-scripts:/usr/share/elasticsearch/scripts
     command: elasticsearch -Des.network.host=0.0.0.0
 
   kopf:
@@ -79,6 +64,18 @@ services:
         ipv6_address: 2001:3984:3989::40
     environment:
       - ELASTICSEARCH_URL=http://172.16.238.10:9200
+
+volumes:
+  # elasticsearch 1
+  es1-data:
+  es1-logs:
+  es1-plugins:
+  es1-scripts:
+  # elasticsearch 2
+  es2-data:
+  es2-logs:
+  es2-plugins:
+  es2-scripts:
 
 networks:
   elk-network:
