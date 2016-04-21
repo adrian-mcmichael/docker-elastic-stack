@@ -65,6 +65,16 @@ services:
     environment:
       - ELASTICSEARCH_URL=http://172.16.238.10:9200
 
+  logstash:
+    depends_on:
+      - elasticsearch1
+      - elasticsearch2
+    build: ./logstash
+    networks:
+      elk-network:
+        ipv4_address: 172.16.238.50
+        ipv6_address: 2001:3984:3989::50
+
 volumes:
   # elasticsearch 1
   es1-data:

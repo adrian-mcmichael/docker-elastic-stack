@@ -1,0 +1,4 @@
+./logstash/config
+./logstash/logs
+./logstash/patterns
+./logstash/templates
