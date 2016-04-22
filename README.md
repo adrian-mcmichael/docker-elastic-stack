@@ -17,8 +17,19 @@ The following components are created when this docker file is created:
 
 ## Running
 
+To initialise the folders that logstash will you to copy over its configuration
+and any test logs.
+
 ```bash
 ./initialise.sh
+```
 
+Then put any test logstash configuration in the /logstash/config folder, logs
+to ingest in the /logstash/logs folder and optionally logstash patterns in the
+patterns folder and elasticsearch mapping templates in templates.
+
+Then spin up the stack.
+
+```bash
 docker-compose up
 ```
