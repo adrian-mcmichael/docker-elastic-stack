@@ -1,5 +1,8 @@
 # docker-elastic-stack
 
+Provides an elasticsearch environment for testing logstash configurations
+against sample logs.
+
 ## Requirements
 
 Install the Docker toolbox at at least version 1.11.0
@@ -17,8 +20,8 @@ The following components are created when this docker file is created:
 
 ## Running
 
-To initialise the folders that logstash will you to copy over its configuration
-and any test logs.
+To initialise the folders that logstash will use to copy over its configuration
+with any test logs.
 
 ```bash
 ./initialise.sh
