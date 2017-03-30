@@ -1,8 +1,12 @@
-FROM elasticsearch:2.3.1
+FROM elasticsearch:2.4.1
+
+RUN apt-get update && apt-get install -y curl
 
 COPY elasticsearch.yml /usr/share/elasticsearch/config
 
-WORKDIR /usr/share/elasticsearch/bin
+RUN /usr/share/elasticsearch/bin/plugin install license
+RUN /usr/share/elasticsearch/bin/plugin install watcher
+RUN /usr/share/elasticsearch/bin/plugin install marvel-agent
 
-RUN plugin install license
-RUN plugin install marvel-agent
+HEALTHCHECK --interval=30s --timeout=30s \
+  CMD curl -f http://localhost:9200/ || exit 1

@@ -113,8 +113,8 @@ cluster.name: test-elasticsearch
 # Note, that for development on a local machine, with small indices, it usually
 # makes sense to "disable" the distributed features:
 #
-#index.number_of_shards: 1
-#index.number_of_replicas: 0
+index.number_of_shards: 1
+index.number_of_replicas: 0
 
 # These settings directly affect the performance of index and search operations
 # in your cluster. Assuming you have enough machines to hold shards and
@@ -404,3 +404,14 @@ script.engine.groovy.inline.mapping: off
 script.engine.groovy.inline.search: on
 script.engine.groovy.inline.update: off
 script.engine.groovy.inline.plugin: off
+script.engine.groovy.inline.elasticsearch-watcher_watch: on
+
+watcher.actions.email.service.account:
+    work:
+        profile: gmail
+        email_defaults:
+            from: 'Watcher <watcher@example.com>'
+        smtp:
+            host: 172.16.238.80
+            port: 25
+

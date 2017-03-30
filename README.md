@@ -1,26 +1,37 @@
 # docker-elastic-stack
 
-Provides an elasticsearch environment for testing logstash configurations
+Provides an Elasticsearch environment for testing Logstash configurations
 against sample logs.
 
 ## Requirements
 
-Install the Docker toolbox at at least version 1.11.0
+Install the Docker toolbox at at least version 1.13.0
 
 ## Description
 
 The following components are created when this docker file is created:
 
 * Spins up a two node Elasticsearch cluster (available on ports 9200 and 8200 respectively)
-* Installs Marvel plugin on the cluster.
+* Installs the following plugins on the cluster:
+   * Marvel
+   * Watcher
+   * License
 * Spins up Kopf as a standalone server on port 8080.
 * Mounts Elasticsearch data containers.
-* Spins up Kibana with Sense, Timelion and Marvel.
+* Spins up Kibana with Sense, Timelion, Prelert Swimlane Visualisation and Marvel.
 * Spins up logstash (use initialise.sh script to create the directories local used to copy logstash logs and config from)
+* Spins up an SMTP server for sending emails through Watcher
+
+## Setup
+
+Add an Elastic license.json file to the `license-call` directory next to the Dockerfile. This allows Watcher and Marvel to function without their trial period expiring. This license can be obtained
+from your Elastic support portal account if you have a support contract.
+
+If you want to use this stack without a license then remove the license-call containers from the docker-compose file
 
 ## Running
 
-To initialise the folders that logstash will use to copy over its configuration
+To initialise the folders that Logstash will use to copy over its configuration
 with any test logs.
 
 ```bash

@@ -2,3 +2,5 @@
 ./logstash/logs
 ./logstash/patterns
 ./logstash/templates
+
+.idea/

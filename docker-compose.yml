@@ -1,10 +1,13 @@
-version: '2'
+version: '2.1'
 services:
+
   elasticsearch1:
     build: ./elasticsearch
     ports:
       - "9200:9200"
       - "9300:9300"
+    links:
+      - smtp-service
     networks:
       elk-network:
         ipv4_address: 172.16.238.10
@@ -17,12 +20,12 @@ services:
     command: elasticsearch -Des.network.host=0.0.0.0
 
   elasticsearch2:
-    depends_on:
-      - elasticsearch1
     build: ./elasticsearch
     ports:
       - "8200:9200"
       - "8300:9300"
+    links:
+      - smtp-service
     networks:
       elk-network:
         ipv4_address: 172.16.238.20
@@ -35,9 +38,6 @@ services:
     command: elasticsearch -Des.network.host=0.0.0.0
 
   kopf:
-    depends_on:
-      - elasticsearch1
-      - elasticsearch2
     image: lmenezes/elasticsearch-kopf
     networks:
       elk-network:
@@ -51,8 +51,10 @@ services:
 
   kibana:
     depends_on:
-      - elasticsearch1
-      - elasticsearch2
+      elasticsearch1:
+        condition: service_healthy
+      elasticsearch2:
+        condition: service_healthy
     build: ./kibana
     ports:
       - "5601:5601"
@@ -67,13 +69,53 @@ services:
 
   logstash:
     depends_on:
+      elasticsearch1:
+        condition: service_healthy
+      elasticsearch2:
+        condition: service_healthy
+    build: ./logstash
+    links:
       - elasticsearch1
       - elasticsearch2
-    build: ./logstash
     networks:
       elk-network:
         ipv4_address: 172.16.238.50
         ipv6_address: 2001:3984:3989::50
+
+  license-call1:
+    depends_on:
+      elasticsearch1:
+        condition: service_healthy
+    build: ./license-call
+    links:
+      - elasticsearch1
+    networks:
+      elk-network:
+        ipv4_address: 172.16.238.60
+        ipv6_address: 2001:3984:3989::60
+    command: http://172.16.238.10:9200/_license
+
+  license-call2:
+    depends_on:
+      elasticsearch2:
+        condition: service_healthy
+    build: ./license-call
+    links:
+      - elasticsearch2
+    networks:
+      elk-network:
+        ipv4_address: 172.16.238.70
+        ipv6_address: 2001:3984:3989::70
+    command: http://172.16.238.20:9200/_license
+
+  smtp-service:
+    image: namshi/smtp
+    networks:
+      elk-network:
+        ipv4_address: 172.16.238.80
+        ipv6_address: 2001:3984:3989::80
+    ports:
+      - "8025:25"
 
 volumes:
   # elasticsearch 1
