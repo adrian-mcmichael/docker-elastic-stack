@@ -1,8 +1,8 @@
-./logstash/config
-./logstash/logs
-./logstash/patterns
-./logstash/templates
+/logstash/config
+/logstash/logs
+/logstash/patterns
+/logstash/templates
 
 .idea/
 
-./license-call/license.json
+/license-call/license.json
