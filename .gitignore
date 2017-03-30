@@ -4,3 +4,5 @@
 ./logstash/templates
 
 .idea/
+
+./license-call/license.json
