@@ -7,6 +7,11 @@ against sample logs.
 
 Install the Docker toolbox at at least version 1.13.0
 
+Make sure that you have given a reasonable amount of RAM and CPUs to your local Docker:
+[https://docs.docker.com/docker-for-mac/#advanced]()
+
+At least 4GB and 2 CPUs is recommended.
+
 ## Description
 
 The following components are created when this docker file is created:
@@ -30,8 +35,6 @@ from your Elastic support portal account if you have a support contract.
 
 If you want to use this stack without a license then remove the license-call containers from the docker-compose file
 
-## Running
-
 To initialise the folders that Logstash will use to copy over its configuration
 with any test logs.
 
@@ -43,8 +46,20 @@ Then put any test logstash configuration in the /logstash/config folder, logs
 to ingest in the /logstash/logs folder and optionally logstash patterns in the
 patterns folder and elasticsearch mapping templates in templates.
 
-Then spin up the stack.
+## Running
+
+Spin up the stack with:
 
 ```bash
 docker-compose up
 ```
+
+Once up:
+
+   * Elasticsearch will be available on localhost:9200 and localhost:8200
+   * Kibana will be available on localhost:5601
+   * Kopf will be on localhost:8080
+   * Mailhog will have its web UI on localhost:8025 and the smtp service will be on port 1025
+   * Marvel, Sense and Timelion will be available from the Kibana plugins menu option
+   
+
