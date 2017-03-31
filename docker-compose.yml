@@ -7,7 +7,7 @@ services:
       - "9200:9200"
       - "9300:9300"
     links:
-      - smtp-service
+      - mailhog
     networks:
       elk-network:
         ipv4_address: 172.16.238.10
@@ -25,7 +25,7 @@ services:
       - "8200:9200"
       - "8300:9300"
     links:
-      - smtp-service
+      - mailhog
     networks:
       elk-network:
         ipv4_address: 172.16.238.20
@@ -108,14 +108,15 @@ services:
         ipv6_address: 2001:3984:3989::70
     command: http://172.16.238.20:9200/_license
 
-  smtp-service:
-    image: namshi/smtp
+  mailhog:
+    image: mailhog/mailhog
     networks:
       elk-network:
         ipv4_address: 172.16.238.80
         ipv6_address: 2001:3984:3989::80
     ports:
-      - "8025:25"
+      - "1025:1025"
+      - "8025:8025"
 
 volumes:
   # elasticsearch 1

@@ -413,5 +413,5 @@ watcher.actions.email.service.account:
             from: 'Watcher <watcher@example.com>'
         smtp:
             host: 172.16.238.80
-            port: 25
+            port: 1025
 

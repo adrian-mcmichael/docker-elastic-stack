@@ -20,7 +20,8 @@ The following components are created when this docker file is created:
 * Mounts Elasticsearch data containers.
 * Spins up Kibana with Sense, Timelion, Prelert Swimlane Visualisation and Marvel.
 * Spins up logstash (use initialise.sh script to create the directories local used to copy logstash logs and config from)
-* Spins up an SMTP server for sending emails through Watcher
+* Spins up an instance of mailhog for testing sending emails through Watcher
+   * [https://github.com/mailhog/MailHog]()
 
 ## Setup
 
